@@ -1,0 +1,143 @@
+General information
+===================
+
+The aim of xloops is to calculate one-particle irreducible Feynman diagrams
+with one or two closed loops for arbitrary processes in the Standard Model
+of particles and related theories. Results can be returned both
+algebraically and numerically. All necessary tensor integrals are treated
+for arbitrary masses and momenta. xloops was originally written in the
+language of the Maple computer algebra system.
+
+The xloops-GiNaC package, of which this document is a part, is a partial
+re-implementation of the original xloops program based on the GiNaC C++
+library for symbolic computation. It currently consists of a library of
+GiNaC functions for calculating one-loop one-, two- and three-point
+integrals to any tensor rank. Our goal is to eventually re-implement the
+complete xloops program in C++ using GiNaC.
+
+
+Web site and mailing list
+=========================
+
+The official web site for xloops is:
+  http://wwwthep.physik.uni-mainz.de/~xloops/
+
+A mailing list is located at:
+  xloops-list@thep.physik.uni-mainz.de
+
+To subscribe, send an email to majordomo@thep.physik.uni-mainz.de containing
+the line
+
+  subscribe xloops-list your-name@your.domain
+
+in the body of your email. You will then receive an email containing
+instructions how to confirm your subscription.
+
+See http://www.ginac.de/Lists.html for the list policy.
+
+
+Installation
+============
+
+See the file "INSTALL".
+
+
+What is there and how to use it
+===============================
+
+xloops-GiNaC currently consists of two components:
+
+ 1. A "libxloops" C++ library (and associated header files) that contains
+    a couple of GiNaC functions for calculating one-loop integrals. These
+    get installed to
+
+      {PREFIX}/lib/libxloops.a
+      {PREFIX}/include/xloops/*.h
+
+    (the installation prefix can be changed with the "--prefix=PREFIX" option
+    to "configure"; it defaults to /usr/local)
+
+    Here is an example program that calculates the analytical and numerical
+    result for the UV-divergent and the finite terms of the integral
+    OneLoop2Pt(1,0,q,m1,m2,1,1,rho):
+
+      #include <iostream>
+      #include <ginac/ginac.h>
+      #include <xloops/xloops.h>
+
+      using namespace GiNaC;
+      using namespace xloops;
+
+      int main(void)
+      {
+        symbol q("q"), m1("m1"), m2("m2"), eps("eps"), rho("rho");
+        ex a = OneLoop2Pt(1, 0, q, m1, m2, 1, 1, rho);
+        a = a.series(eps == 0, 2);
+        ex a1 = a.coeff(eps, -1).subs(rho == 0);
+        ex a2 = a.coeff(eps, 0).subs(rho == 0);
+        cout << "Order eps^-1 is " << endl << a1.normal() << endl;
+        cout << "Order eps^0 is "  << endl << a2 << endl;
+        return 0;
+      }
+
+   This program has to be linked with the xloops and GiNaC libraries.
+
+ 2. A version of the interactive GiNaC shell "ginsh", called "ginsh-xloops"
+    that adds the OneLoop1Pt(), OneLoop2Pt() and OneLoop3Pt() functions. You
+    can use this for experimenting interactively with the xloops functions.
+    By default, ginsh-xloops gets installed to
+
+      {PREFIX}/bin/ginsh-xloops
+
+    Here is an example ginsh-xloops session in which the same integral is
+    calculated as in the above C++ program (divergent part only):
+
+      ginsh - GiNaC Interactive Shell (xloops-ginac V0.1.3)
+        __,  _______  Copyright (C) 1999-2001 Johannes Gutenberg University Mainz,
+       (__) *       | Germany.  This is free software with ABSOLUTELY NO WARRANTY.
+        ._) i N a C | You are welcome to redistribute it under certain conditions.
+      <-------------' For details type arranty;'.
+
+      Type ?? for a list of help topics.
+      > a = OneLoop2Pt(1,0,q,m1,m2,1,1,rho);
+      OneLoop2Pt(1,0,q,m1,m2,1,1,rho)
+      > a = tensor_reduction(a, eps);
+      1/2*Scalar1Pt(m2,rho)*q^(-1)-1/2*q^(-1)*Scalar1Pt(m1,rho)+Scalar2Pt(q,m1,m2,1,1,rho)*(-1/2*m2^2*q^(-1)+1/2*m1^2*q^(-1)-1/2*q)
+      > a = series(a,eps==0,1);
+      (I*Pi^2*(-1/2*m2^2*q^(-1)+1/2*m1^2*q^(-1)-1/2*q)+1/2*I*Pi^2*m2^2*q^(-1)-1/2*I*Pi^2*m1^2*q^(-1))*eps^(-1)+Order(1)
+      > normal(");
+      (-1/2*I*Pi^2*q)*eps^(-1)+Order(1)
+
+If you are unfamiliar with GiNaC, we recommend that you read the GiNaC
+tutorial first because currently xloops-GiNaC is only usable in the form of
+GiNaC functions.
+
+
+How to report bugs
+==================
+
+If you have identified a bug in xloops you are welcome to send a detailed bug
+report to <xloops-bugs@thep.physik.uni-mainz.de>. Please think about your
+bug! This means that you should include
+
+* Information about your system
+
+   - Which operating system and version (uname -a)
+   - Which C compiler and version (gcc --version)
+   - For Linux, which version of the C library
+
+  And anything else you think is relevant.
+
+* Information about your version of xloops
+
+   - Version and release number
+   - Which options xloops was configured with
+
+* How to reproduce the bug
+
+   - If it is a systematical bug in the library, a short test program
+     together with the output you get and the output you expect will
+     help us to reproduce it quickly.
+
+Patches are most welcome. If possible please make them with diff -c and
+include ChangeLog entries.

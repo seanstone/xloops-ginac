@@ -1,0 +1,12 @@
+The xloops-GiNaC Group
+----------------------
+Christian Bauer <Christian.Bauer@uni-mainz.de>
+Do Hoang Son <dhson@thep.physik.uni-mainz.de>
+Alexander Frink <Alexander.Frink@uni-mainz.de>
+
+The original xloops code was developed by
+-----------------------------------------
+Lars Bruecher (Maple coding, Tcl/Tk user interface)
+Johannes Franzkowski (Maple coding)
+Richard Kreckel (pVegas routines)
+Dirk Kreimer (initial ideas for P-O space method)

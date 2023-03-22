@@ -1,0 +1,5 @@
+#! /bin/sh
+echo "Running checks..."
+./check_loop 2>result.out
+echo "Comparing output..."
+cmp ${srcdir}/result.ref result.out

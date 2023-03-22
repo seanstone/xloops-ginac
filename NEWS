@@ -1,0 +1,16 @@
+This file records noteworthy changes.
+
+0.1.3 (8 November 2001)
+* Fixed an off-by-one error in OneLoop1Pt() for the case t>0.
+
+0.1.2 (16 October 2001)
+* Separated tensor reduction from series expansion of basic integrals.
+* Added more special cases.
+* Added OneLoopTens*Pt() functions.
+
+0.1.1 (26 March 2001)
+* po_redux module adapted to the changes to indexed objects in GiNaC 0.8.0
+
+0.1.0 (21 February 2001)
+* Initial public release of GiNaC-based one-loop library
+

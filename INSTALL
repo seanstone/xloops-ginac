@@ -1,0 +1,39 @@
+Prerequisites
+=============
+
+xloops-GiNaC requires the GiNaC library for symbolic computation in C++
+which can be obtained from http://www.ginac.de. The required minimum version
+you need to have installed is GiNaC 0.9.4.
+
+
+Installation
+============
+
+As with any autoconfiguring GNU software, installation is as easy as this:
+
+ $ ./configure
+ $ make
+[become root if necessary]
+ # make install
+
+With certain versions of gcc, compilation can take a large amount of time and
+memory when using the default optimization level -O2. If you're impatient,
+you can specify a lower optimization level thus:
+
+ $ make CXXFLAGS="-g -O1"
+
+The "configure" script can be given a number of options to enable and
+disable various features. For a complete list, type:
+
+ $ ./configure --help
+
+A few of the more important ones:
+
+ --prefix=PREFIX        install architecture-independent files in PREFIX
+                        [defaults to /usr/local]
+ --exec-prefix=EPREFIX  install architecture-dependent files in EPREFIX
+                        [defaults to the value given to --prefix]
+ --with-ginac=DIR       if GiNaC is not sitting on a system-wide default place
+                        you need to tell configure where to find it by using
+                        this option. DIR must be a directory that contains
+                        ginac/ginac.h and ginac/libginac.la
